@@ -1,0 +1,1 @@
+export const FLT_EPSILON = 0.0000001192092896;

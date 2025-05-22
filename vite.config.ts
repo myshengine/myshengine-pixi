@@ -25,7 +25,7 @@ export default defineConfig({
             fileName: 'index',
         },
         rollupOptions: {
-            external: ['@gamzix/hemi-core', 'pixi.js', 'pixi-spine', '@pixi/particle-emitter', '@pixi/layers'],
+            external: ['myshengine-core', 'pixi.js', 'pixi-spine', '@pixi/particle-emitter', '@pixi/layers'],
         },
     },
 });
