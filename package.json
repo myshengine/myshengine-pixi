@@ -1,0 +1,70 @@
+{
+    "name": "myshengine-pixi",
+    "description": "Integration layer of the Mysh framework for working with the Pixi library. Brings the full power of Mysh to projects that use Pixi.",
+    "author": "Daniil Stolpnik",
+    "license": "MIT",
+    "private": false,
+    "version": "0.8.0",
+    "type": "module",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "keywords": [
+        "ecs",
+        "ecs-framework",
+        "entity-component-system",
+        "typescript",
+        "game-dev",
+        "game-development",
+        "javascript",
+        "mysh",
+        "pixi",
+        "modular",
+        "scalable"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/myshengine/myshengine-pixi.git"
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
+        }
+    },
+    "scripts": {
+        "dev": "vite --config vite.config.ts",
+        "build": "vite build --config vite.config.ts",
+        "preview": "vite preview --config vite.config.ts",
+        "test": "vitest --config vitest.config.ts",
+        "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings=0",
+        "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+        "format": "prettier --write 'src/**/*.{ts,tsx}'"
+    },
+    "peerDependencies": {
+        "myshengine-core": "^0.9.4",
+        "pixi.js": "^7.4.2",
+        "@pixi/layers": "^2.1.0",
+        "@pixi/particle-emitter": "^5.0.8",
+        "pixi-spine": "^4.0.4"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "@typescript-eslint/eslint-plugin": "^8.18.1",
+        "@typescript-eslint/parser": "^8.18.1",
+        "eslint": "^9.17.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-import-resolver-typescript": "^3.7.0",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.4.2",
+        "typescript": "~5.6.2",
+        "vite": "^6.0.3",
+        "vite-plugin-dts": "^3.7.3",
+        "vitest": "^2.1.8"
+    }
+}
