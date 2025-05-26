@@ -14,6 +14,7 @@ import { IEvent } from 'pixi-spine';
 import { ITextStyle } from 'pixi.js';
 import { ITrackEntry } from 'pixi-spine';
 import { MyshApp } from 'myshengine-core';
+import { NineSlicePlane } from 'pixi.js';
 import { ObservablePoint } from 'pixi.js';
 import * as particles from '@pixi/particle-emitter';
 import { Polygon } from 'pixi.js';
@@ -342,6 +343,15 @@ export declare interface IMaskOptions {
     isDebug?: boolean;
 }
 
+export declare interface INineSliceOptions extends IDisplayObjectOptions, IAssetable {
+    type: ViewType<NineSlicePlane>;
+    leftWidth: number;
+    topHeight: number;
+    rightWidth: number;
+    bottomHeight: number;
+    tint?: number;
+}
+
 export declare interface IParticleEmitter {
     createParticleEmitter(name: string, parent: Container, config: any): particles.Emitter;
     update(dt: number): void;
@@ -639,7 +649,7 @@ export declare class SpineUtils implements ISpineUtils {
     setSkin(spine: Spine, skinName: string): void;
 }
 
-export declare type TreeNode = IContainerOptions | ISpriteOptions | ITextOptions | IBitmapTextOptions | ISpineOptions;
+export declare type TreeNode = IContainerOptions | ISpriteOptions | ITextOptions | IBitmapTextOptions | ISpineOptions | INineSliceOptions;
 
 export declare class Tween<T> {
     set tag(value: number);
