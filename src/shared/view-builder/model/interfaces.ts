@@ -1,4 +1,4 @@
-import { BitmapText, Container, IBitmapTextStyle, ITextStyle, Polygon, Sprite, Text } from 'pixi.js';
+import { BitmapText, Container, IBitmapTextStyle, ITextStyle, NineSlicePlane, Polygon, Sprite, Text } from 'pixi.js';
 import { EntityFactory, PixiEventMode, PixiEventType, TreeNode, ViewType } from './types';
 import { Component } from 'myshengine-core';
 import { IAssetable } from '@shared/assets-manager';
@@ -95,6 +95,15 @@ export interface ISpineOptions extends IDisplayObjectOptions, IAssetable {
     timeScale?: number;
     skin?: string;
     loop?: number;
+}
+
+export interface INineSliceOptions extends IDisplayObjectOptions, IAssetable {
+    type: ViewType<NineSlicePlane>;
+    leftWidth: number,
+    topHeight: number,
+    rightWidth: number,
+    bottomHeight: number,
+    tint?: number
 }
 
 export interface IViewBuilder {
