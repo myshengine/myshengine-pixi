@@ -1,4 +1,4 @@
-import { BitmapText, Container, Sprite, Text } from 'pixi.js';
+import { BitmapText, Container, NineSlicePlane, Sprite, Text } from 'pixi.js';
 import { AssetStatus, IAssetsManager } from '@shared/assets-manager';
 import { IBuilderBehaviour, IViewBuilder, TreeNode } from '@shared/view-builder';
 import { PixiType } from '@data/assets-manager';
@@ -7,6 +7,7 @@ import { OnViewCreatedSignal } from './signals';
 import {
     BitmapBuilderBehaviour,
     ContainerBuilderBehaviour,
+    NineSliceBuilderBehaviour,
     SpineBuilderBehaviour,
     SpriteBuilderBehaviour,
     TextBuilderBehaviour,
@@ -43,6 +44,7 @@ export class ViewBuilder implements IViewBuilder {
         this._behaviours.set(BitmapText, new BitmapBuilderBehaviour());
         this._behaviours.set(Text, new TextBuilderBehaviour());
         this._behaviours.set(Spine, new SpineBuilderBehaviour());
+        this._behaviours.set(NineSlicePlane, new NineSliceBuilderBehaviour());
     }
 
     private createChildren(children: TreeNode[], view: Container): void {
