@@ -1,6 +1,6 @@
 import { IEntity } from 'myshengine-core';
 import { Container, DisplayObject, ObservablePoint } from 'pixi.js';
-import { IBitmapTextOptions, IContainerOptions, ISpineOptions, ISpriteOptions, ITextOptions } from './interfaces';
+import { IBitmapTextOptions, IContainerOptions, INineSliceOptions, ISpineOptions, ISpriteOptions, ITextOptions } from './interfaces';
 
 export type ViewType<T extends DisplayObject = DisplayObject> = new (...args: any[]) => T;
 
@@ -10,7 +10,7 @@ export type EntityFactory = (view: Container) => IEntity;
 
 export type PixiEventMode = 'none' | 'passive' | 'auto' | 'static' | 'dynamic';
 
-export type TreeNode = IContainerOptions | ISpriteOptions | ITextOptions | IBitmapTextOptions | ISpineOptions;
+export type TreeNode = IContainerOptions | ISpriteOptions | ITextOptions | IBitmapTextOptions | ISpineOptions | INineSliceOptions;
 
 export type PixiEventType =
     | 'pointercancel'
