@@ -24,9 +24,9 @@ export interface IEntityOptions {
 }
 
 export interface IInteractivityOptions {
-    eventMode: PixiEventMode;
-    cursor: string;
-    events: { evnetType: PixiEventType; callback: (event: any) => void }[];
+    eventMode?: PixiEventMode;
+    cursor?: string;
+    emit: PixiEventType[]
 }
 
 export interface IMaskOptions {
@@ -57,10 +57,12 @@ export interface IDisplayObjectOptions {
     scale?: IVec2;
     alpha?: number;
     rotation?: number;
+    angle?: number;
     width?: number;
     height?: number;
     children?: TreeNode[];
     mask?: IMaskOptions;
+    interactiveChild?: boolean;
     debugBorder?: boolean;
     debugBorderColor?: number;
     debugBorderWidth?: number;

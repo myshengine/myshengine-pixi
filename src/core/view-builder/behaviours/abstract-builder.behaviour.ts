@@ -11,6 +11,7 @@ import {
 } from '@shared/view-builder';
 import { Layers } from '@core/layers';
 import { ViewEntity } from '@data/view-entity';
+import { OnElementInteractSignal } from '@core/interactable';
 
 
 export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> implements IBuilderBehaviour<T> {
@@ -20,11 +21,14 @@ export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> 
     protected setCommonData(options: IDisplayObjectOptions, view: Container): void {
         view.name = options.name;
         view.alpha = options.alpha === undefined ? 1 : options.alpha;
+        view.angle = options.angle || 0;
         view.rotation = options.rotation || 0;
         view.zIndex = options.zIndex || 0;
         view.zOrder = options.zOrder || 0;
         view.visible = options.visible !== undefined ? options.visible : true;
         view.sortableChildren = !!options.sortableChildren;
+    
+        if(options.interactiveChild !== undefined) view.interactiveChildren = options.interactiveChild;
 
         if (options.position) view.position = { x: options.position.x || 0, y: options.position.y || 0 };
         if (options.relativePosition) this.setRelativePosition(options.relativePosition, view);
@@ -40,16 +44,22 @@ export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> 
             view.parentGroup = layers.getGroup(options.parentGroup);
         }
 
-        options.entity && this.setEntity(options.entity, view);
+        let entity: IEntity | null = null;
+
+        options.entity && (entity = this.setEntity(options.entity, view));
         options.mask && this.setMask(options.mask, view);
 
         if (options.interactive) {
-            view.eventMode = options.interactive.eventMode;
-            view.cursor = options.interactive.cursor;
+            view.eventMode = options.interactive.eventMode || 'static';
+            view.cursor = options.interactive.cursor || 'pointer';
 
-            options.interactive.events.forEach(({ evnetType, callback }) => {
-                view.on(evnetType, callback);
-            });
+            options.interactive.emit.forEach((type) => view.on(type, () => {
+                OnElementInteractSignal.dispatch({
+                    type,
+                    view,
+                    entity,
+                });
+            }));
         }
 
         if (options.interactiveChildren !== undefined) {
@@ -113,7 +123,7 @@ export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> 
         view.addChild(container);
     }
 
-    protected setEntity(options: IEntityOptions, view: Container): void {
+    protected setEntity(options: IEntityOptions, view: Container): IEntity {
         const entity = options.instance ? options.instance(view) : new PixiEntity(Utils.uuid(), `Entity-${view.name}`);
         const components = options.components || [];
         this.setComponents(entity, [view, ...components]);
@@ -127,6 +137,8 @@ export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> 
         view.on('destroyed', () => {
             entityStorage.removeEntity(entity.uuid);
         });
+
+        return entity;
     }
 
     protected setComponents(entity: IEntity, components: Component[]): void {
