@@ -273,10 +273,12 @@ export declare interface IDisplayObjectOptions {
     scale?: IVec2;
     alpha?: number;
     rotation?: number;
+    angle?: number;
     width?: number;
     height?: number;
     children?: TreeNode[];
     mask?: IMaskOptions;
+    interactiveChild?: boolean;
     debugBorder?: boolean;
     debugBorderColor?: number;
     debugBorderWidth?: number;
@@ -293,13 +295,16 @@ export declare interface IExternalResolvableAsset extends IAsset {
     resolve: (value: IAsset) => void;
 }
 
+export declare interface IInteraction {
+    type: PixiEventType;
+    view: Container;
+    entity: IEntity | null;
+}
+
 export declare interface IInteractivityOptions {
-    eventMode: PixiEventMode;
-    cursor: string;
-    events: {
-        evnetType: PixiEventType;
-        callback: (event: any) => void;
-    }[];
+    eventMode?: PixiEventMode;
+    cursor?: string;
+    emit: PixiEventType[];
 }
 
 export declare interface ILayerOptions {
@@ -539,6 +544,8 @@ export declare class ObjectPool<T> {
 }
 
 declare type OmitType<Base, Type> = KeyPartial<Base, AllowedNames<Base, Type>>;
+
+export declare const OnElementInteractSignal: Signal<IInteraction>;
 
 export declare const OnViewCreatedSignal: Signal<Container<DisplayObject>>;
 
