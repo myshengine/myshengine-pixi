@@ -86,14 +86,26 @@ export abstract class AbstractBuilderBehaviour<T extends IDisplayObjectOptions> 
     }
 
     protected setMask(mask: IMaskOptions, view: Container): void {
-        const { x, y, width, height } = mask;
-
+        const { x, y, type } = mask;
         const container = new Graphics();
         container.beginFill(mask.color || 0xffffff);
 
-        container.drawRect(x, y, x + width, y + height);
-        container.pivot.x = width / 2;
-        container.pivot.y = height / 2;
+        if(type === 'rect') {
+            let { width, height } = mask;
+
+            if(!width) width = x;
+            if(!height) height = y;
+
+            container.drawRect(x, y, x + width, y + height);
+            container.pivot.x = width / 2;
+            container.pivot.y = height / 2;
+        }
+        else if(type === 'circle') {
+            container.drawCircle(x, y, mask.radius || 1);
+
+            container.x = view.width / 2;
+            container.y = view.height / 2;
+        }
 
         container.endFill();
 
