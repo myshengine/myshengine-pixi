@@ -47,8 +47,8 @@ class jt {
     const i = s[t], r = i.textures;
     for (let a in i.animations) {
       this._assetsManager.add(t);
-      const o = i.animations[a];
-      this._assetsManager.updateOnLoad(t, [{ name: a, asset: o, bundle: e }]);
+      const c = i.animations[a];
+      this._assetsManager.updateOnLoad(t, [{ name: a, asset: c, bundle: e }]);
     }
     for (let a in r)
       this._assetsManager.updateOnLoad(e, [{ name: a, asset: r[a], bundle: e }]);
@@ -75,7 +75,7 @@ class Ht {
       space: " ",
       dash: "-",
       plus: "+"
-    }, o = r.data.frames, c = Object.keys(o).map((u, _) => {
+    }, c = r.data.frames, o = Object.keys(c).map((u, _) => {
       i.page.push({
         id: _,
         file: ""
@@ -94,12 +94,12 @@ class Ht {
       }), w;
     });
     i.common[0] = {
-      lineHeight: c[0].height
+      lineHeight: o[0].height
     }, i.info[0] = {
       face: t,
-      size: c[0].height
+      size: o[0].height
     };
-    const g = new Z(i, c, !0);
+    const g = new Z(i, o, !0);
     Z.available[t] = g;
   }
 }
@@ -115,10 +115,10 @@ class k {
   constructor(t) {
     this._assetsManager = t, this._dimension = "", this._behaviours = /* @__PURE__ */ new Map(), this.closestDimension = (e) => {
       const s = window.screen.height * window.devicePixelRatio, i = window.screen.width * window.devicePixelRatio, r = s > i ? s : i, a = e.map((u) => Math.abs(r - u.width));
-      let o = a[0], c = 0;
+      let c = a[0], o = 0;
       return a.map((u, _) => {
-        u < o && (o = u, c = _);
-      }), e[c].alias;
+        u < c && (c = u, o = _);
+      }), e[o].alias;
     };
   }
   get dimension() {
@@ -174,7 +174,7 @@ class k {
       for (let i of s.assets) {
         if (!Array.isArray(i.srcs)) continue;
         const r = i.srcs.some(
-          (a) => e.some((o) => a.includes(`.${o}`))
+          (a) => e.some((c) => a.includes(`.${c}`))
         );
         s.assets = s.assets.filter(() => !r);
       }
@@ -269,12 +269,16 @@ class S {
     e.anchor.set(r, a);
   }
   setRelativePosition(t, e) {
-    const s = l.instance.get(U), { width: i, height: r } = s.renderer.screen, a = t.x || 0, o = t.y || 0, c = i / 2 * a, g = r / 2 * o;
-    e.position.set(c, g);
+    const s = l.instance.get(U), { width: i, height: r } = s.renderer.screen, a = t.x || 0, c = t.y || 0, o = i / 2 * a, g = r / 2 * c;
+    e.position.set(o, g);
   }
   setMask(t, e) {
-    const { x: s, y: i, width: r, height: a } = t, o = new K();
-    o.beginFill(t.color || 16777215), o.drawRect(s, i, s + r, i + a), o.pivot.x = r / 2, o.pivot.y = a / 2, o.endFill(), t.isDebug || (e.mask = o), e.addChild(o);
+    const { x: s, y: i, type: r } = t, a = new K();
+    if (a.beginFill(t.color || 16777215), r === "rect") {
+      let { width: c, height: o } = t;
+      c || (c = s), o || (o = i), a.drawRect(s, i, s + c, i + o), a.pivot.x = c / 2, a.pivot.y = o / 2;
+    } else r === "circle" && (a.drawCircle(s, i, t.radius || 1), a.x = e.width / 2, a.y = e.height / 2);
+    a.endFill(), t.isDebug || (e.mask = a), e.addChild(a);
   }
   setEntity(t, e) {
     const s = t.instance ? t.instance(e) : new Jt(Pt.uuid(), `Entity-${e.name}`), i = t.components || [];
@@ -392,8 +396,8 @@ class ee {
   }
   async play() {
     for (; this._chain.length > 0; ) {
-      const t = this._curent = this._chain[0], { spine: e, name: s, deferredPromise: i, options: r } = t, { loopCount: a, timeScale: o } = r;
-      a === -1 && this.add(e, s, r), e.state.timeScale = o || 0, this._originalTimeScale = e.state.timeScale, o && (e.state.timeScale = (o + this._timescaleModifier) * this._timeScaleMiltiplier), this._listener && e.state.removeListener(this._listener), this.clear(e), this._listener = this.setListener(r, i), e.state.addListener(this._listener), e.state.setAnimation(0, s, !1), await i.promise, this._chain.shift();
+      const t = this._curent = this._chain[0], { spine: e, name: s, deferredPromise: i, options: r } = t, { loopCount: a, timeScale: c } = r;
+      a === -1 && this.add(e, s, r), e.state.timeScale = c || 0, this._originalTimeScale = e.state.timeScale, c && (e.state.timeScale = (c + this._timescaleModifier) * this._timeScaleMiltiplier), this._listener && e.state.removeListener(this._listener), this.clear(e), this._listener = this.setListener(r, i), e.state.addListener(this._listener), e.state.setAnimation(0, s, !1), await i.promise, this._chain.shift();
     }
     this._spineController.remove(this._name);
   }
@@ -539,8 +543,8 @@ class se extends S {
     if (!i) throw new Error(`Asset ${t.asset.toString()} not found!`);
     const r = i.asset, a = new ut(r);
     if (t.initialAnimation && a.state.hasAnimation(t.initialAnimation)) {
-      const o = `${t.key || ""}:${t.name}`;
-      s.create(o).add(a, t.initialAnimation, {
+      const c = `${t.key || ""}:${t.name}`;
+      s.create(c).add(a, t.initialAnimation, {
         timeScale: t.timeScale,
         loopCount: t.loop
       }).play(), a.autoUpdate = !0;
@@ -837,8 +841,8 @@ const v = class v extends h {
   update(t) {
     let e, s = 0;
     const i = this._split, r = this._actions, a = this._last;
-    let o;
-    t = this.computeEaseTime(t), t < i ? (e = i !== 0 ? t / i : 1, s === 0 && a === 1 && this._reversed && (r[1].update(0), r[1].stop())) : (s = 1, e = i === 1 ? 1 : (t - i) / (1 - i), a === -1 && (r[0].startWithTarget(this.target), r[0].update(1), r[0].stop()), a === 0 && (r[0].update(1), r[0].stop())), o = r[s], !(a === s && o.isDone()) && (a !== s && o.startWithTarget(this.target), e *= o._timesForRepeat, o.update(e > 1 ? e % 1 : e), this._last = s);
+    let c;
+    t = this.computeEaseTime(t), t < i ? (e = i !== 0 ? t / i : 1, s === 0 && a === 1 && this._reversed && (r[1].update(0), r[1].stop())) : (s = 1, e = i === 1 ? 1 : (t - i) / (1 - i), a === -1 && (r[0].startWithTarget(this.target), r[0].update(1), r[0].stop()), a === 0 && (r[0].update(1), r[0].stop())), c = r[s], !(a === s && c.isDone()) && (a !== s && c.startWithTarget(this.target), e *= c._timesForRepeat, c.update(e > 1 ? e % 1 : e), this._last = s);
   }
   reverse() {
     const t = v._actionOneTwo(this._actions[1].reverse(), this._actions[0].reverse());
@@ -1325,10 +1329,10 @@ class D extends h {
       if (!e.hasOwnProperty(i)) continue;
       let r = e[i];
       if (typeof r == "function" && (r = r()), r == null || typeof r == "string") continue;
-      let a, o;
-      r.value !== void 0 && (r.easing || r.progress) && (typeof r.easing == "string" ? a = it[r.easing] : a = r.easing, o = r.progress, r = r.value);
-      const c = /* @__PURE__ */ Object.create(null);
-      c.value = r, c.easing = a, c.progress = o, this._props[i] = c;
+      let a, c;
+      r.value !== void 0 && (r.easing || r.progress) && (typeof r.easing == "string" ? a = it[r.easing] : a = r.easing, c = r.progress, r = r.value);
+      const o = /* @__PURE__ */ Object.create(null);
+      o.value = r, o.easing = a, o.progress = c, this._props[i] = o;
     }
     this._originProps = e, this.initWithDuration(t);
   }
@@ -1343,13 +1347,13 @@ class D extends h {
       const r = t[i];
       if (r === void 0)
         continue;
-      const a = s[i], o = a.value;
+      const a = s[i], c = a.value;
       if (typeof r == "number")
-        a.start = r, a.current = r, a.end = e ? r + o : o;
+        a.start = r, a.current = r, a.end = e ? r + c : c;
       else if (typeof r == "object") {
         a.start == null && (a.start = {}, a.current = {}, a.end = {});
-        for (const c in o)
-          isNaN(r[c]) || (a.start[c] = r[c], a.current[c] = r[c], a.end[c] = e ? r[c] + o[c] : o[c]);
+        for (const o in c)
+          isNaN(r[o]) || (a.start[o] = r[o], a.current[o] = r[o], a.end[o] = e ? r[o] + c[o] : c[o]);
       }
     }
     this._opts.onStart && this._opts.onStart(this.target);
@@ -1361,14 +1365,14 @@ class D extends h {
     let r = t;
     i.easing && (r = i.easing(t));
     const a = i.progress;
-    for (const o in s) {
-      const c = s[o], g = c.easing ? c.easing(t) : r, u = c.progress ? c.progress : a, _ = c.start, M = c.end;
+    for (const c in s) {
+      const o = s[c], g = o.easing ? o.easing(t) : r, u = o.progress ? o.progress : a, _ = o.start, M = o.end;
       if (typeof _ == "number")
-        c.current = u(_, M, c.current, g);
+        o.current = u(_, M, o.current, g);
       else if (typeof _ == "object")
         for (const A in _)
-          c.current[A] = u(_[A], M[A], c.current[A], g);
-      e[o] = c.current;
+          o.current[A] = u(_[A], M[A], o.current[A], g);
+      e[c] = o.current;
     }
     i.onUpdate && i.onUpdate(this.target, t), t === 1 && i.onComplete && i.onComplete(this.target);
   }
@@ -1601,15 +1605,15 @@ class ze extends Rt {
     globalThis.__PIXI_APP__ = t;
   }
   initializeDependencies(t) {
-    const e = new x(), s = new j(e), i = new G(), r = new k(e), a = new B(), o = new z(), c = new N(), g = new tt(), u = new et(), _ = new rt(t, s, a), M = l.instance.get(Q), A = l.instance.get(qt), w = new at(M, A, c);
+    const e = new x(), s = new j(e), i = new G(), r = new k(e), a = new B(), c = new z(), o = new N(), g = new tt(), u = new et(), _ = new rt(t, s, a), M = l.instance.get(Q), A = l.instance.get(qt), w = new at(M, A, o);
     this.registerGlobalServices([
       { provide: x, useFactory: () => e },
       { provide: j, useFactory: () => s },
       { provide: G, useFactory: () => i },
       { provide: k, useFactory: () => r },
       { provide: B, useFactory: () => a },
-      { provide: z, useFactory: () => o },
-      { provide: N, useFactory: () => c },
+      { provide: z, useFactory: () => c },
+      { provide: N, useFactory: () => o },
       { provide: tt, useFactory: () => g },
       { provide: et, useFactory: () => u },
       { provide: rt, useFactory: () => _ },

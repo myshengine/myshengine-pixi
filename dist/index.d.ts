@@ -335,10 +335,12 @@ export declare interface IManifest {
 }
 
 export declare interface IMaskOptions {
+    type: 'rect' | 'circle';
     x: number;
     y: number;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
+    radius?: number;
     color?: number;
     isDebug?: boolean;
 }
